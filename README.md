@@ -1,4 +1,4 @@
-# NCU Web Application (fe-be)
+# NCU Web Application (ncu-web-app-labs)
 
 A full-stack web application designed for managing Teacher and Student records. This project features a robust **Node.js (Express)** backend API paired with a responsive **Angular** frontend, all fully encapsulated inside **Docker** for seamless deployment, development, and testing.
 
@@ -35,7 +35,7 @@ The easiest way to get the application running is by using Docker Compose. It au
 1. **Navigate to the root directory**:
 
    ```bash
-   cd fe-be
+   cd ncu-web-app-labs
    ```
 
 2. **Spin up the containers in detached mode**:
