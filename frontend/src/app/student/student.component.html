@@ -1,0 +1,188 @@
+<div class="container mt-4">
+  <div
+    class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center mb-3"
+  >
+    <h2 class="mb-3 mb-sm-0">Student List</h2>
+    <div class="d-flex gap-2">
+      <button class="btn btn-success me-2" (click)="openDialog()">
+        <i class="bi bi-plus-lg"></i> Add Student
+      </button>
+      <div class="btn-group">
+        <button
+          class="btn btn-outline-primary"
+          [class.active]="viewMode === 'table'"
+          (click)="viewMode = 'table'"
+        >
+          <i class="bi bi-table"></i> Table
+        </button>
+        <button
+          class="btn btn-outline-primary"
+          [class.active]="viewMode === 'card'"
+          (click)="viewMode = 'card'"
+        >
+          <i class="bi bi-grid"></i> Card
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="table-responsive" *ngIf="viewMode === 'table'">
+    <table class="table table-striped table-hover table-bordered align-middle">
+      <thead class="table-dark">
+        <tr>
+          <th>Avatar</th>
+          <th>Name</th>
+          <th>Age</th>
+          <th>Email</th>
+          <th>Major</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="let student of students"
+          (click)="openDialog(student)"
+          style="cursor: pointer"
+        >
+          <td>
+            <img
+              [src]="
+                'https://ui-avatars.com/api/?name=' +
+                student.name +
+                '&background=random&rounded=true'
+              "
+              alt="Avatar"
+              width="40"
+              height="40"
+            />
+          </td>
+          <td>{{ student.name }}</td>
+          <td>{{ student.age }}</td>
+          <td>{{ student.email }}</td>
+          <td>{{ student.major }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="viewMode === 'card'" class="row">
+    <div
+      class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4"
+      *ngFor="let student of students"
+    >
+      <div
+        class="card h-100 shadow border-0 rounded-3"
+        (click)="openDialog(student)"
+        style="cursor: pointer"
+      >
+        <div class="card-body">
+          <div class="d-flex align-items-center mb-3">
+            <img
+              [src]="
+                'https://ui-avatars.com/api/?name=' +
+                student.name +
+                '&background=random&rounded=true'
+              "
+              alt="Avatar"
+              width="50"
+              height="50"
+              class="me-3"
+            />
+            <div>
+              <h5 class="card-title mb-0">{{ student.name }}</h5>
+              <h6 class="card-subtitle text-muted">{{ student.major }}</h6>
+            </div>
+          </div>
+          <p class="card-text">
+            <strong>Age:</strong> {{ student.age }}<br />
+            <strong>Email:</strong> {{ student.email }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add/Edit Student Modal -->
+<div
+  class="modal fade show"
+  tabindex="-1"
+  *ngIf="showAddModal"
+  style="display: block; background: rgba(0, 0, 0, 0.5)"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          {{ isEditMode ? "Edit Student" : "Add New Student" }}
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          (click)="closeDialog()"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <label for="name" class="form-label">Name</label>
+            <input
+              type="text"
+              class="form-control"
+              id="name"
+              [(ngModel)]="currentStudent.name"
+              name="name"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="age" class="form-label">Age</label>
+            <input
+              type="number"
+              class="form-control"
+              id="age"
+              [(ngModel)]="currentStudent.age"
+              name="age"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input
+              type="email"
+              class="form-control"
+              id="email"
+              [(ngModel)]="currentStudent.email"
+              name="email"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="major" class="form-label">Major</label>
+            <input
+              type="text"
+              class="form-control"
+              id="major"
+              [(ngModel)]="currentStudent.major"
+              name="major"
+            />
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-danger me-auto"
+          *ngIf="isEditMode"
+          (click)="deleteStudent()"
+        >
+          Delete
+        </button>
+        <button type="button" class="btn btn-secondary" (click)="closeDialog()">
+          Cancel
+        </button>
+        <button type="button" class="btn btn-primary" (click)="onSubmit()">
+          Save
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

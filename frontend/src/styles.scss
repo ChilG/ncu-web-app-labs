@@ -1,0 +1,28 @@
+@use 'styles/variables' as *;
+/* Bootstrap Variables Override */
+@import "bootstrap/scss/bootstrap";
+@import "bootstrap-icons/font/bootstrap-icons.css";
+
+/* Google Fonts Import */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap');
+
+:root {
+    --bs-primary: #{$primary-color};
+    --bs-secondary: #{$secondary-color};
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bs-body-bg);
+    color: var(--bs-body-color);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+}

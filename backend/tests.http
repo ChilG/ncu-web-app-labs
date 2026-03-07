@@ -1,0 +1,46 @@
+### Needed REST Client extention installed.
+
+@baseUrl = http://localhost:3000
+
+### Root Endpoint
+GET {{baseUrl}}/
+
+### Get All Teachers
+GET {{baseUrl}}/teacher
+
+### Create Teacher
+POST {{baseUrl}}/teacher
+Content-Type: application/json
+
+{
+    "id": "T001",
+    "name": "Prof. Goe",
+    "department": "Computer Science",
+    "picture": "https://example.com/goe.jpg",
+    "username": "goe123",
+    "password": "securepassword123"
+}
+
+### Update Teacher
+PUT {{baseUrl}}/teacher/T001
+Content-Type: application/json
+
+{
+    "name": "Prof. Goe Updated",
+    "department": "Software Engineering",
+    "picture": "https://example.com/goe_v2.jpg",
+    "username": "goe123",
+    "password": "securepassword123"
+}
+
+### Login
+POST {{baseUrl}}/teacher/login
+Content-Type: application/json
+
+{
+    "username": "goe123",
+    "password": "securepassword123"
+}
+
+### Delete Teacher
+DELETE {{baseUrl}}/teacher/T001

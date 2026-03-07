@@ -1,0 +1,324 @@
+<div class="container mt-4">
+  <div
+    class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center mb-3"
+  >
+    <h2 class="mb-3 mb-sm-0">Teacher List</h2>
+    <div class="d-flex gap-2">
+      <button class="btn btn-success me-2" (click)="openDialog()">
+        <i class="bi bi-plus-lg"></i> Add Teacher
+      </button>
+      <div class="btn-group">
+        <button
+          class="btn btn-outline-primary"
+          [class.active]="viewMode === 'table'"
+          (click)="viewMode = 'table'"
+        >
+          <i class="bi bi-table"></i> Table
+        </button>
+        <button
+          class="btn btn-outline-primary"
+          [class.active]="viewMode === 'card'"
+          (click)="viewMode = 'card'"
+        >
+          <i class="bi bi-grid"></i> Card
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="table-responsive" *ngIf="viewMode === 'table'">
+    <table class="table table-striped table-hover table-bordered align-middle">
+      <thead class="table-dark">
+        <tr>
+          <th>Picture</th>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Department</th>
+          <th>Username</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="let teacher of teachers"
+          (click)="openDialog(teacher)"
+          style="cursor: pointer"
+        >
+          <td>
+            <img
+              [src]="
+                teacher.picture ||
+                'https://ui-avatars.com/api/?name=' +
+                  teacher.name +
+                  '&background=random&rounded=true'
+              "
+              alt="Avatar"
+              width="40"
+              height="40"
+              style="object-fit: cover; border-radius: 50%"
+            />
+          </td>
+          <td>{{ teacher.id }}</td>
+          <td>{{ teacher.name }}</td>
+          <td>{{ teacher.department }}</td>
+          <td>{{ teacher.username }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="viewMode === 'card'" class="row">
+    <div
+      class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4"
+      *ngFor="let teacher of teachers"
+    >
+      <div
+        class="card h-100 shadow border-0 rounded-3"
+        (click)="openDialog(teacher)"
+        style="cursor: pointer"
+      >
+        <div class="card-body">
+          <div class="d-flex align-items-center mb-3">
+            <img
+              [src]="
+                teacher.picture ||
+                'https://ui-avatars.com/api/?name=' +
+                  teacher.name +
+                  '&background=random&rounded=true'
+              "
+              alt="Avatar"
+              width="50"
+              height="50"
+              class="me-3"
+              style="object-fit: cover; border-radius: 50%"
+            />
+            <div>
+              <h5 class="card-title mb-0">{{ teacher.name }}</h5>
+              <h6 class="card-subtitle text-muted">{{ teacher.department }}</h6>
+            </div>
+          </div>
+          <p class="card-text">
+            <strong>ID:</strong> {{ teacher.id }}<br />
+            <strong>Username:</strong> {{ teacher.username }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add/Edit Teacher Modal -->
+<div
+  class="modal fade show"
+  tabindex="-1"
+  *ngIf="showAddModal"
+  style="display: block; background: rgba(0, 0, 0, 0.5)"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          {{ isEditMode ? "Edit Teacher" : "Add New Teacher" }}
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          (click)="closeDialog()"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="teacherForm">
+          <div class="mb-3">
+            <label for="id" class="form-label">Teacher ID</label>
+            <input
+              type="text"
+              class="form-control"
+              id="id"
+              formControlName="id"
+              [class.is-invalid]="
+                teacherForm.get('id')?.invalid && teacherForm.get('id')?.touched
+              "
+            />
+            <div
+              class="invalid-feedback"
+              *ngIf="teacherForm.get('id')?.errors?.['required']"
+            >
+              Teacher ID is required.
+            </div>
+            <div
+              class="invalid-feedback"
+              *ngIf="teacherForm.get('id')?.errors?.['maxlength']"
+            >
+              Teacher ID must be at most 6 characters long.
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="name" class="form-label">Name</label>
+            <input
+              type="text"
+              class="form-control"
+              id="name"
+              formControlName="name"
+              [class.is-invalid]="
+                teacherForm.get('name')?.invalid &&
+                teacherForm.get('name')?.touched
+              "
+            />
+            <div
+              class="invalid-feedback"
+              *ngIf="teacherForm.get('name')?.errors?.['required']"
+            >
+              Name is required.
+            </div>
+            <div
+              class="invalid-feedback"
+              *ngIf="teacherForm.get('name')?.errors?.['minlength']"
+            >
+              Name must be at least 3 characters long.
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="department" class="form-label">Department</label>
+            <input
+              type="text"
+              class="form-control"
+              id="department"
+              formControlName="department"
+              [class.is-invalid]="
+                teacherForm.get('department')?.invalid &&
+                teacherForm.get('department')?.touched
+              "
+            />
+            <div
+              class="invalid-feedback"
+              *ngIf="teacherForm.get('department')?.errors?.['required']"
+            >
+              Department is required.
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="pictureFile" class="form-label">Profile Picture</label>
+            <!-- Show existing picture if modifying -->
+            <div
+              *ngIf="
+                isEditMode && teacherForm.get('picture')?.value && !previewUrl
+              "
+              class="mb-2"
+            >
+              <img
+                [src]="teacherForm.get('picture')?.value"
+                alt="Current Avatar"
+                width="60"
+                height="60"
+                style="object-fit: cover; border-radius: 5px"
+              />
+            </div>
+            <div *ngIf="previewUrl" class="mb-2">
+              <img
+                [src]="previewUrl"
+                alt="Preview Avatar"
+                width="60"
+                height="60"
+                style="object-fit: cover; border-radius: 5px"
+              />
+            </div>
+
+            <input
+              type="file"
+              accept="image/*"
+              class="form-control"
+              id="pictureFile"
+              (change)="onFileSelected($event)"
+              [class.is-invalid]="
+                teacherForm.get('picture')?.invalid &&
+                teacherForm.get('picture')?.touched &&
+                !selectedFile
+              "
+            />
+            <div
+              class="invalid-feedback"
+              *ngIf="
+                teacherForm.get('picture')?.errors?.['required'] &&
+                !selectedFile
+              "
+            >
+              Please upload a picture.
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="username" class="form-label">Username</label>
+            <input
+              type="text"
+              class="form-control"
+              id="username"
+              formControlName="username"
+              [class.is-invalid]="
+                teacherForm.get('username')?.invalid &&
+                teacherForm.get('username')?.touched
+              "
+            />
+            <div
+              class="invalid-feedback"
+              *ngIf="teacherForm.get('username')?.errors?.['required']"
+            >
+              Username is required.
+            </div>
+          </div>
+          <div class="mb-3" *ngIf="!isEditMode">
+            <label for="password" class="form-label">Password</label>
+            <input
+              type="password"
+              class="form-control"
+              id="password"
+              formControlName="password"
+              [class.is-invalid]="
+                teacherForm.get('password')?.invalid &&
+                teacherForm.get('password')?.touched
+              "
+            />
+            <div
+              class="invalid-feedback"
+              *ngIf="teacherForm.get('password')?.errors?.['required']"
+            >
+              Password is required for new teachers.
+            </div>
+            <div
+              class="invalid-feedback"
+              *ngIf="teacherForm.get('password')?.errors?.['minlength']"
+            >
+              Password must be at least 6 characters long.
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-danger me-auto"
+          *ngIf="isEditMode"
+          (click)="deleteTeacher()"
+        >
+          Delete
+        </button>
+        <button type="button" class="btn btn-secondary" (click)="closeDialog()">
+          Cancel
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="onSubmit()"
+          [disabled]="isUploading"
+        >
+          <span
+            *ngIf="isUploading"
+            class="spinner-border spinner-border-sm me-1"
+            role="status"
+            aria-hidden="true"
+          ></span>
+          {{ isUploading ? "Saving..." : "Save" }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,74 @@
+<div class="row justify-content-center mt-5">
+  <div class="col-md-6 col-lg-4">
+    <div class="card shadow border-0 rounded-3">
+      <div
+        class="card-header bg-dark text-white text-center py-3 rounded-top-3"
+      >
+        <h4 class="mb-0">
+          <i class="bi bi-box-arrow-in-right me-2"></i>Sign In
+        </h4>
+      </div>
+      <div class="card-body p-4">
+        <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+          {{ errorMessage }}
+        </div>
+
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+          <div class="mb-3">
+            <label for="username" class="form-label">Username</label>
+            <input
+              type="text"
+              class="form-control"
+              id="username"
+              formControlName="username"
+              [ngClass]="{
+                'is-invalid':
+                  loginForm.get('username')?.invalid &&
+                  loginForm.get('username')?.touched,
+              }"
+              placeholder="Enter username"
+            />
+            <div
+              class="invalid-feedback"
+              *ngIf="loginForm.get('username')?.errors?.['required']"
+            >
+              Username is required.
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input
+              type="password"
+              class="form-control"
+              id="password"
+              formControlName="password"
+              [ngClass]="{
+                'is-invalid':
+                  loginForm.get('password')?.invalid &&
+                  loginForm.get('password')?.touched,
+              }"
+              placeholder="Password"
+            />
+            <div
+              class="invalid-feedback"
+              *ngIf="loginForm.get('password')?.errors?.['required']"
+            >
+              Password is required.
+            </div>
+          </div>
+
+          <div class="d-grid gap-2 mt-4">
+            <button
+              type="submit"
+              class="btn btn-primary btn-lg"
+              [disabled]="loginForm.invalid"
+            >
+              <i class="bi bi-box-arrow-in-right me-2"></i>Sign In
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

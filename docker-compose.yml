@@ -1,0 +1,65 @@
+version: '3.8'
+name: ncu-web-app
+
+services:
+  db:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: ncu
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - web-app-network-1
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: rootpassword
+    depends_on:
+      - db
+    networks:
+      - web-app-network-1
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - DB_HOST=db
+      - DB_USER=root
+      - DB_PASSWORD=rootpassword
+      - DB_NAME=ncu
+      - JWT_SECRET=super_secret_jwt_key
+      - PASSWORD_PEPPER=super_secret_pepper
+    depends_on:
+      - db
+    networks:
+      - web-app-network-1
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "4200:80"
+    depends_on:
+      - backend
+    networks:
+      - web-app-network-1
+
+volumes:
+  db_data:
+
+networks:
+  web-app-network-1:
+    driver: bridge
