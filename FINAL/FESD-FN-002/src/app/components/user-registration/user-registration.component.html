@@ -1,17 +1,25 @@
-<div class="row justify-content-center mt-5">
+<div class="row justify-content-center mt-5 mb-5">
   <div class="col-md-8 col-lg-6">
-    <div class="card shadow">
-      <div class="card-header bg-primary text-white">
-        <h4 class="mb-0">User Registration</h4>
+    <div class="card shadow-lg border-0 rounded-4">
+      <div
+        class="card-header bg-primary bg-gradient text-white text-center py-4 rounded-top-4 border-0"
+      >
+        <h3 class="mb-0 fw-bold">
+          <i class="bi bi-person-plus-fill me-2"></i>Create an Account
+        </h3>
+        <p class="mb-0 text-white-50 small mt-1">
+          Join us! Fill out the form below to get started.
+        </p>
       </div>
-      <div class="card-body">
+      <div class="card-body p-4 p-md-5">
         <!-- Bootstrap 5 Alerts -->
         <div
           *ngIf="successMessage"
-          class="alert alert-success alert-dismissible fade show"
+          class="alert alert-success alert-dismissible fade show d-flex align-items-center rounded-3"
           role="alert"
         >
-          {{ successMessage }}
+          <i class="bi bi-check-circle-fill me-2 fs-5"></i>
+          <div>{{ successMessage }}</div>
           <button
             type="button"
             class="btn-close"
@@ -22,10 +30,11 @@
 
         <div
           *ngIf="errorMessage"
-          class="alert alert-danger alert-dismissible fade show"
+          class="alert alert-danger alert-dismissible fade show d-flex align-items-center rounded-3"
           role="alert"
         >
-          {{ errorMessage }}
+          <i class="bi bi-exclamation-triangle-fill me-2 fs-5"></i>
+          <div>{{ errorMessage }}</div>
           <button
             type="button"
             class="btn-close"
@@ -36,13 +45,59 @@
 
         <!-- Registration Form -->
         <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()" novalidate>
+          <div class="row g-3 mb-3">
+            <!-- First Name -->
+            <div class="col-md-6">
+              <div class="form-floating">
+                <input
+                  type="text"
+                  id="userFirstName"
+                  class="form-control rounded-3"
+                  placeholder="John"
+                  formControlName="userFirstName"
+                  [ngClass]="{
+                    'is-invalid':
+                      registrationForm.get('userFirstName')?.invalid &&
+                      registrationForm.get('userFirstName')?.touched,
+                  }"
+                />
+                <label for="userFirstName"
+                  >First Name <span class="text-danger">*</span></label
+                >
+                <div class="invalid-feedback px-2">First Name is required.</div>
+              </div>
+            </div>
+
+            <!-- Last Name -->
+            <div class="col-md-6">
+              <div class="form-floating">
+                <input
+                  type="text"
+                  id="userLastName"
+                  class="form-control rounded-3"
+                  placeholder="Doe"
+                  formControlName="userLastName"
+                  [ngClass]="{
+                    'is-invalid':
+                      registrationForm.get('userLastName')?.invalid &&
+                      registrationForm.get('userLastName')?.touched,
+                  }"
+                />
+                <label for="userLastName"
+                  >Last Name <span class="text-danger">*</span></label
+                >
+                <div class="invalid-feedback px-2">Last Name is required.</div>
+              </div>
+            </div>
+          </div>
+
           <!-- Email -->
-          <div class="mb-3">
-            <label for="userEmail" class="form-label">Email Address *</label>
+          <div class="form-floating mb-3">
             <input
               type="email"
               id="userEmail"
-              class="form-control"
+              class="form-control rounded-3"
+              placeholder="name@example.com"
               formControlName="userEmail"
               [ngClass]="{
                 'is-invalid':
@@ -50,7 +105,10 @@
                   registrationForm.get('userEmail')?.touched,
               }"
             />
-            <div class="invalid-feedback">
+            <label for="userEmail"
+              >Email Address <span class="text-danger">*</span></label
+            >
+            <div class="invalid-feedback px-2">
               <span
                 *ngIf="registrationForm.get('userEmail')?.errors?.['required']"
                 >Email is required.</span
@@ -62,12 +120,12 @@
           </div>
 
           <!-- Password -->
-          <div class="mb-3">
-            <label for="userPassword" class="form-label">Password *</label>
+          <div class="form-floating mb-3">
             <input
               type="password"
               id="userPassword"
-              class="form-control"
+              class="form-control rounded-3"
+              placeholder="Password"
               formControlName="userPassword"
               [ngClass]="{
                 'is-invalid':
@@ -75,7 +133,10 @@
                   registrationForm.get('userPassword')?.touched,
               }"
             />
-            <div class="invalid-feedback">
+            <label for="userPassword"
+              >Password <span class="text-danger">*</span></label
+            >
+            <div class="invalid-feedback px-2">
               <span
                 *ngIf="
                   registrationForm.get('userPassword')?.errors?.['required']
@@ -93,47 +154,13 @@
             </div>
           </div>
 
-          <!-- First Name -->
-          <div class="mb-3">
-            <label for="userFirstName" class="form-label">First Name *</label>
-            <input
-              type="text"
-              id="userFirstName"
-              class="form-control"
-              formControlName="userFirstName"
-              [ngClass]="{
-                'is-invalid':
-                  registrationForm.get('userFirstName')?.invalid &&
-                  registrationForm.get('userFirstName')?.touched,
-              }"
-            />
-            <div class="invalid-feedback">First Name is required.</div>
-          </div>
-
-          <!-- Last Name -->
-          <div class="mb-3">
-            <label for="userLastName" class="form-label">Last Name *</label>
-            <input
-              type="text"
-              id="userLastName"
-              class="form-control"
-              formControlName="userLastName"
-              [ngClass]="{
-                'is-invalid':
-                  registrationForm.get('userLastName')?.invalid &&
-                  registrationForm.get('userLastName')?.touched,
-              }"
-            />
-            <div class="invalid-feedback">Last Name is required.</div>
-          </div>
-
           <!-- Telephone -->
-          <div class="mb-3">
-            <label for="userTel" class="form-label">Telephone *</label>
+          <div class="form-floating mb-3">
             <input
               type="text"
               id="userTel"
-              class="form-control"
+              class="form-control rounded-3"
+              placeholder="0987654321"
               formControlName="userTel"
               [ngClass]="{
                 'is-invalid':
@@ -141,7 +168,10 @@
                   registrationForm.get('userTel')?.touched,
               }"
             />
-            <div class="invalid-feedback">
+            <label for="userTel"
+              >Telephone <span class="text-danger">*</span></label
+            >
+            <div class="invalid-feedback px-2">
               <span
                 *ngIf="registrationForm.get('userTel')?.errors?.['required']"
                 >Telephone is required.</span
@@ -153,16 +183,13 @@
           </div>
 
           <!-- Date of Birth -->
-          <div class="mb-4">
-            <label for="dateOfBirth" class="form-label"
-              >Date of Birth (YYYY-MM-DD) *</label
-            >
+          <div class="form-floating mb-4">
             <input
               type="text"
               placeholder="YYYY-MM-DD"
               maxlength="10"
               id="dateOfBirth"
-              class="form-control"
+              class="form-control rounded-3"
               formControlName="dateOfBirth"
               (input)="onDateInput($event)"
               [ngClass]="{
@@ -171,7 +198,11 @@
                   registrationForm.get('dateOfBirth')?.touched,
               }"
             />
-            <div class="invalid-feedback">
+            <label for="dateOfBirth"
+              >Date of Birth (YYYY-MM-DD)
+              <span class="text-danger">*</span></label
+            >
+            <div class="invalid-feedback px-2">
               <span
                 *ngIf="
                   registrationForm.get('dateOfBirth')?.errors?.['required']
@@ -191,22 +222,22 @@
             </div>
           </div>
 
-          <div class="d-grid gap-2">
+          <div class="d-grid gap-3 pt-2">
             <button
               type="submit"
-              class="btn btn-primary"
+              class="btn btn-primary btn-lg rounded-pill fw-bold shadow-sm"
               [disabled]="registrationForm.invalid && registrationForm.touched"
             >
-              Register
+              Create Account
             </button>
             <button
               type="button"
-              class="btn btn-secondary"
+              class="btn btn-light btn-lg rounded-pill text-muted fw-bold border"
               (click)="
                 registrationForm.reset(); successMessage = ''; errorMessage = ''
               "
             >
-              Clear
+              Clear Form
             </button>
           </div>
         </form>
