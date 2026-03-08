@@ -9,8 +9,7 @@ export class User {
   constructor(data?: Partial<User>) {
     Object.assign(this, data);
   }
-
-  // 3.1.1: Calculate age from dateOfBirth returning age in years
+  // Calculate age from dateOfBirth returning age in years
   getAge(): number | string {
     if (!this.dateOfBirth) {
        throw new Error('Missing Data: dateOfBirth is null or undefined');
