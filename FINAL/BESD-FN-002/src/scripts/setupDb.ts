@@ -4,12 +4,7 @@ async function setup() {
     try {
         console.log("Setting up se_course_db Database...");
 
-        // 1. Create DB if it doesn't exist (need a root connection without specific DB first typically, 
-        //    but we'll assume the db connection works as per standard practice or we override)
-        // Here we just use the existing pool config to execute standard setup queries. 
-        // If the DB doesn't exist, the pool connection might fail initially if DB_NAME is strictly enforced and not present.
-        // For standard local docker it's fine.
-        
+        // 1. Create DB if it doesn't exist
         await pool.query(`CREATE DATABASE IF NOT EXISTS se_course_db;`);
         await pool.query(`USE se_course_db;`);
         
