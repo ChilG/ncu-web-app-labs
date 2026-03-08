@@ -164,6 +164,7 @@
               id="dateOfBirth"
               class="form-control"
               formControlName="dateOfBirth"
+              (input)="onDateInput($event)"
               [ngClass]="{
                 'is-invalid':
                   registrationForm.get('dateOfBirth')?.invalid &&

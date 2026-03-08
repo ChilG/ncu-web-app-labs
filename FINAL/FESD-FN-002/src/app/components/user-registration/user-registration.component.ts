@@ -54,4 +54,19 @@ export class UserRegistrationComponent implements OnInit {
       this.registrationForm.markAllAsTouched();
     }
   }
+
+  // Auto-format date input to YYYY-MM-DD
+  onDateInput(event: any): void {
+    let input = event.target.value.replace(/\D/g, '').substring(0, 8); // Keep only numbers, max 8 digits
+    let formatted = input;
+    
+    if (input.length > 4) {
+      formatted = input.substring(0, 4) + '-' + input.substring(4);
+    }
+    if (input.length > 6) {
+      formatted = formatted.substring(0, 7) + '-' + input.substring(6);
+    }
+    
+    this.registrationForm.get('dateOfBirth')?.setValue(formatted, { emitEvent: false });
+  }
 }
