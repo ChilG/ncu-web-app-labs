@@ -1,7 +1,22 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { UserService } from '../../services/user.service';
+
+function realDateValidator(control: AbstractControl): ValidationErrors | null {
+  if (!control.value) return null;
+  
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(control.value)) return { pattern: true };
+
+  const [year, month, day] = control.value.split('-').map(Number);
+  
+  const date = new Date(year, month - 1, day);
+  if (date.getFullYear() !== year || date.getMonth() !== month - 1 || date.getDate() !== day) {
+    return { invalidDate: true };
+  }
+  
+  return null;
+}
 
 @Component({
   selector: 'app-user-registration',
@@ -26,7 +41,7 @@ export class UserRegistrationComponent implements OnInit {
       userFirstName: ['', Validators.required],
       userLastName: ['', Validators.required],
       userTel: ['', [Validators.required, Validators.pattern('^[0-9]+$')]], // Assuming telephone is digits
-      dateOfBirth: ['', [Validators.required, Validators.pattern(/^\d{4}-\d{2}-\d{2}$/)]] // YYYY-MM-DD
+      dateOfBirth: ['', [Validators.required, realDateValidator]]
     });
   }
 
