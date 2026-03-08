@@ -1,0 +1,207 @@
+<div class="row justify-content-center mt-5">
+  <div class="col-md-8 col-lg-6">
+    <div class="card shadow">
+      <div class="card-header bg-primary text-white">
+        <h4 class="mb-0">User Registration</h4>
+      </div>
+      <div class="card-body">
+        <!-- Bootstrap 5 Alerts (Requirement 4.1, 4.2) -->
+        <div
+          *ngIf="successMessage"
+          class="alert alert-success alert-dismissible fade show"
+          role="alert"
+        >
+          {{ successMessage }}
+          <button
+            type="button"
+            class="btn-close"
+            (click)="successMessage = ''"
+            aria-label="Close"
+          ></button>
+        </div>
+
+        <div
+          *ngIf="errorMessage"
+          class="alert alert-danger alert-dismissible fade show"
+          role="alert"
+        >
+          {{ errorMessage }}
+          <button
+            type="button"
+            class="btn-close"
+            (click)="errorMessage = ''"
+            aria-label="Close"
+          ></button>
+        </div>
+
+        <!-- Registration Form -->
+        <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()" novalidate>
+          <!-- Email -->
+          <div class="mb-3">
+            <label for="userEmail" class="form-label">Email Address *</label>
+            <input
+              type="email"
+              id="userEmail"
+              class="form-control"
+              formControlName="userEmail"
+              [ngClass]="{
+                'is-invalid':
+                  registrationForm.get('userEmail')?.invalid &&
+                  registrationForm.get('userEmail')?.touched,
+              }"
+            />
+            <div class="invalid-feedback">
+              <span
+                *ngIf="registrationForm.get('userEmail')?.errors?.['required']"
+                >Email is required.</span
+              >
+              <span *ngIf="registrationForm.get('userEmail')?.errors?.['email']"
+                >Must be a valid email format.</span
+              >
+            </div>
+          </div>
+
+          <!-- Password -->
+          <div class="mb-3">
+            <label for="userPassword" class="form-label">Password *</label>
+            <input
+              type="password"
+              id="userPassword"
+              class="form-control"
+              formControlName="userPassword"
+              [ngClass]="{
+                'is-invalid':
+                  registrationForm.get('userPassword')?.invalid &&
+                  registrationForm.get('userPassword')?.touched,
+              }"
+            />
+            <div class="invalid-feedback">
+              <span
+                *ngIf="
+                  registrationForm.get('userPassword')?.errors?.['required']
+                "
+                >Password is required.</span
+              >
+              <span
+                *ngIf="
+                  registrationForm.get('userPassword')?.errors?.['minlength'] ||
+                  registrationForm.get('userPassword')?.errors?.['maxlength']
+                "
+              >
+                Password must be between 8 and 15 characters.
+              </span>
+            </div>
+          </div>
+
+          <!-- First Name -->
+          <div class="mb-3">
+            <label for="userFirstName" class="form-label">First Name *</label>
+            <input
+              type="text"
+              id="userFirstName"
+              class="form-control"
+              formControlName="userFirstName"
+              [ngClass]="{
+                'is-invalid':
+                  registrationForm.get('userFirstName')?.invalid &&
+                  registrationForm.get('userFirstName')?.touched,
+              }"
+            />
+            <div class="invalid-feedback">First Name is required.</div>
+          </div>
+
+          <!-- Last Name -->
+          <div class="mb-3">
+            <label for="userLastName" class="form-label">Last Name *</label>
+            <input
+              type="text"
+              id="userLastName"
+              class="form-control"
+              formControlName="userLastName"
+              [ngClass]="{
+                'is-invalid':
+                  registrationForm.get('userLastName')?.invalid &&
+                  registrationForm.get('userLastName')?.touched,
+              }"
+            />
+            <div class="invalid-feedback">Last Name is required.</div>
+          </div>
+
+          <!-- Telephone -->
+          <div class="mb-3">
+            <label for="userTel" class="form-label">Telephone *</label>
+            <input
+              type="text"
+              id="userTel"
+              class="form-control"
+              formControlName="userTel"
+              [ngClass]="{
+                'is-invalid':
+                  registrationForm.get('userTel')?.invalid &&
+                  registrationForm.get('userTel')?.touched,
+              }"
+            />
+            <div class="invalid-feedback">
+              <span
+                *ngIf="registrationForm.get('userTel')?.errors?.['required']"
+                >Telephone is required.</span
+              >
+              <span *ngIf="registrationForm.get('userTel')?.errors?.['pattern']"
+                >Telephone must contain only numbers.</span
+              >
+            </div>
+          </div>
+
+          <!-- Date of Birth -->
+          <div class="mb-4">
+            <label for="dateOfBirth" class="form-label"
+              >Date of Birth (YYYY-MM-DD) *</label
+            >
+            <input
+              type="date"
+              id="dateOfBirth"
+              class="form-control"
+              formControlName="dateOfBirth"
+              [ngClass]="{
+                'is-invalid':
+                  registrationForm.get('dateOfBirth')?.invalid &&
+                  registrationForm.get('dateOfBirth')?.touched,
+              }"
+            />
+            <div class="invalid-feedback">
+              <span
+                *ngIf="
+                  registrationForm.get('dateOfBirth')?.errors?.['required']
+                "
+                >Date of Birth is required.</span
+              >
+              <span
+                *ngIf="registrationForm.get('dateOfBirth')?.errors?.['pattern']"
+                >Must follow YYYY-MM-DD format.</span
+              >
+            </div>
+          </div>
+
+          <div class="d-grid gap-2">
+            <button
+              type="submit"
+              class="btn btn-primary"
+              [disabled]="registrationForm.invalid && registrationForm.touched"
+            >
+              Register
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              (click)="
+                registrationForm.reset(); successMessage = ''; errorMessage = ''
+              "
+            >
+              Clear
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
