@@ -52,16 +52,16 @@ export class UserRegistrationComponent implements OnInit {
     if (this.registrationForm.valid) {
       this.userService.createUser(this.registrationForm.value).subscribe({
         next: (res) => {
-          this.successMessage = 'Registration successful! (201 Created)';
+          this.successMessage = 'Registration successful!';
           this.registrationForm.reset();
         },
         error: (err) => {
           if (err.status === 409 || err.status === 422) {
-            this.errorMessage = 'Email is already registered! (422/409)';
+            this.errorMessage = 'Email is already registered!';
           } else if (err.status === 400) {
-            this.errorMessage = 'Invalid data provided! (400)';
+            this.errorMessage = 'Invalid data provided!';
           } else {
-            this.errorMessage = 'Server / Script Error (500)';
+            this.errorMessage = 'Server / Script Error';
           }
         }
       });
