@@ -1,0 +1,50 @@
+version: '3.8'
+name: final-exam
+
+services:
+  db:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: se_course_db
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - final-exam-network-1
+
+  backend:
+    build:
+      context: ./BESD-FN-002
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - DB_HOST=db
+      - DB_USER=root
+      - DB_PASSWORD=rootpassword
+      - DB_NAME=se_course_db
+    depends_on:
+      - db
+    networks:
+      - final-exam-network-1
+
+  frontend:
+    build:
+      context: ./FESD-FN-002
+      dockerfile: Dockerfile
+    ports:
+      - "4200:80"
+    depends_on:
+      - backend
+    networks:
+      - final-exam-network-1
+
+volumes:
+  db_data:
+
+networks:
+  final-exam-network-1:
+    driver: bridge
