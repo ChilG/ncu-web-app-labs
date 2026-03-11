@@ -1,0 +1,40 @@
+<div class="min-h-screen bg-gray-100 flex flex-col">
+  <header class="bg-indigo-600 shadow-md">
+    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+      <h1 class="text-3xl font-bold text-white tracking-tight">{{ title }}</h1>
+    </div>
+  </header>
+
+  <main class="flex-1 w-full max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+    <div class="flex flex-col md:flex-row gap-6 h-[calc(100vh-140px)]">
+      <!-- Left Column: Active Records List -->
+      <div class="w-full md:w-5/12 overflow-y-auto">
+        <app-record-list
+          (editRecord)="onEdit($event)"
+          (viewHistory)="onViewHistory($event)"
+        >
+        </app-record-list>
+      </div>
+
+      <!-- Right Column: Contextual View (Form or History) -->
+      <div class="w-full md:w-7/12 flex flex-col relative overflow-hidden">
+        <app-record-form
+          *ngIf="activeView === 'form'"
+          [editRecord]="editingRecord"
+          (saved)="onSavedData()"
+          (canceled)="onCancelForm()"
+        >
+        </app-record-form>
+
+        <app-history-view
+          *ngIf="activeView === 'history'"
+          class="flex-1 h-full overflow-hidden"
+          [recordId]="historyRecordId"
+          (rollbackComplete)="onHistoryRollback()"
+          (close)="closeHistory()"
+        >
+        </app-history-view>
+      </div>
+    </div>
+  </main>
+</div>
